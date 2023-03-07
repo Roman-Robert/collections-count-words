@@ -41,7 +41,7 @@ public class Words {
         }
 
 
-        //сортировка мапы
+        //сортировка map
         List<Map.Entry<String, Integer>> listOfValues = new LinkedList<>(map.entrySet());
 
         listOfValues.sort(new Comparator<Map.Entry<String, Integer>>() {
