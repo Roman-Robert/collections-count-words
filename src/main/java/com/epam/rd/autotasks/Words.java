@@ -13,7 +13,7 @@ public class Words {
         // получаем список слов длиннее 4 символов
         for (String str : lines) {
 
-            String[] wordsArray = str.replaceAll("[.,]", "").split(" ");
+            String[] wordsArray = str.toLowerCase().replaceAll("[.,]", "").split(" ");
 
             for (String word : wordsArray) {
                 if (word.length() >= 4) wordsList.add(word);
@@ -21,7 +21,7 @@ public class Words {
         }
 
         //считаем количество повторений каждого слова(нужны слова ≥10 раз)
-        HashMap<String, Integer> result = new HashMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
 
         for (int i = 0; i < wordsList.size(); i++) {
 
@@ -36,12 +36,28 @@ public class Words {
             }
 
             if (counter >= 10) {
-                result.put(checkWord, counter);
-                //result.add(String.format("%s - %d", checkWord, counter));
+                map.put(checkWord, counter);
             }
         }
 
-        return result.toString().replaceAll("=", " - ")
+
+        //сортировка мапы
+        List<Map.Entry<String, Integer>> listOfValues = new LinkedList<>(map.entrySet());
+
+        listOfValues.sort(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return -o1.getValue().compareTo(o2.getValue());
+            }
+        });
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : listOfValues) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        
+
+        return sortedMap.toString().replaceAll("=", " - ")
                                 .replaceAll(", ", "\n")
                                 .replaceAll("[{}]","");
     }
